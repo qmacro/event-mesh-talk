@@ -48,11 +48,3 @@ _HTTP can be used asynchronously - see status [202 ACCEPTED](https://httpwg.org/
 
 ---
 
-# Level 1
-
-## Level 2
-
-### Level 3
-
-#### Level 4
-
