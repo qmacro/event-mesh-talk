@@ -71,7 +71,7 @@ The Event Mesh service was previously called Enterprise Messaging.
 
 * Dev plan (deprecated)
 
-_We'll use the `dev` plan for the `enterprise-messaging` service_
+_We'll use the `dev` plan in trial for the `enterprise-messaging` service_
 
 ---
 
@@ -91,9 +91,159 @@ _We'll use the `dev` plan for the `enterprise-messaging` service_
 
 Different APIs for different purposes.
 
-## Management API
+## Management
 
-## Messaging API
+* Queues
+* Queue subscriptions
 
-## Events API
+## Messaging
+
+* Message publication (to queues and topics)
+* Message consumption
+* Webhook subscriptions
+* Webhook subscription handshakes
+* Consumption acknowledgments
+
+## Events
+
+* For CloudEvents
+
+---
+
+# Queue
+
+```text
+
+
+
+
+
+
+
+                         ┌─────────┐
+                         │  QUEUE  │
+                         └─────────┘
+```
+
+---
+
+# Publishing message to queue
+
+```text
+
+                           publish
+
+                              │
+                              │
+                              │
+                              ▼
+                         ┌─────────┐
+                         │  QUEUE  │
+                         └─────────┘
+
+```
+
+---
+
+# Consuming message directly from queue
+
+
+```text
+
+                           publish
+
+                              │
+                              │
+                              │
+                              ▼
+                         ┌─────────┐
+                         │  QUEUE  │
+                         └────┬────┘
+                              │
+                              │
+                              └──────────────────►  consume
+
+```
+
+---
+
+# Consuming messages via webhook
+
+```text
+
+                           publish
+
+                              │
+                              │
+                              │
+                              ▼
+                         ┌─────────┐   webhook    ┌─────────┐
+                         │  QUEUE  ├──────────────┤ WEBHOOK │
+                         └────┬────┘ subscription └─────────┘
+                              │
+                              │
+                              └──────────────────►  consume
+
+```
+
+---
+
+# Publishing message to topic
+
+```text
+
+  publish
+
+     │
+     │
+     │
+     ▼
+┌─────────┐    queue     ┌─────────┐   webhook    ┌─────────┐
+│  TOPIC  ├──────────────┤  QUEUE  ├──────────────┤ WEBHOOK │
+└─────────┘ subscription └────┬────┘ subscription └─────────┘
+                              │
+                              │
+                              └──────────────────►  consume
+```
+
+---
+
+# One queue for multiple topics
+
+```text
+
+
+
+┌─────────┐
+│  TOPIC  ├───────┐
+└─────────┘       │
+                  │
+┌─────────┐       │      ┌─────────┐
+│  TOPIC  ├───────┼──────┤  QUEUE  │
+└─────────┘       │      └─────────┘
+                  │
+┌─────────┐       │
+│  TOPIC  ├───────┘
+└─────────┘
+```
+
+---
+
+# One topic subscribed to by multiple queues
+
+```text
+
+
+                         ┌─────────┐
+                 ┌───────┤  QUEUE  │
+                 │       └─────────┘
+                 │
+┌─────────┐      │       ┌─────────┐
+│  TOPIC  ├──────┼───────┤  QUEUE  │
+└─────────┘      │       └─────────┘
+                 │
+                 │       ┌─────────┐
+                 └───────┤  QUEUE  │
+                         └─────────┘
+```
 
