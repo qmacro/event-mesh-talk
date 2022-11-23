@@ -128,7 +128,7 @@ Different APIs for different purposes.
 
 # Building block concepts
 
-All scripts available in [SAP-samples/cloud-messaging-handsonsapdev][cloud-messaging-handsonsapdev]:
+All scripts available in [SAP-samples/cloud-messaging-handsonsapdev][cloud-messaging-handsonsapdev]
 
 * `service-setup`
 * `cleanup`
