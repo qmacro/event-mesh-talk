@@ -18,7 +18,6 @@ DJ Adams, Developer Advocate at SAP
 * General concepts
 * Specific ideas in SAP Event Mesh 
 * Tangible artifacts
-* Simple CAP-based sender and receiver samples
 * Further reading & resources
 * Questions & answers
 
@@ -34,33 +33,49 @@ Connecting systems via events is different.
 
 ## Traditional connectivity
 
-* Often implemented with HTTP (see note)
-* Point-to-point, synchronous calls
+* Often implemented with HTTP
+* Point-to-point, synchronous calls (see note)
 * Tightly coupled
+* Payload oriented
 
 ## Event based connectivity
 
 * Implemented with HTTP but also with other protocols
 * Brokered, asynchronous
 * Loosely coupled
-* See also: publish/subscribe, messaging
+* Message oriented
+* See also [publish/subscribe][pubsub]
 
 _HTTP can be used asynchronously - see status [202 ACCEPTED](https://httpwg.org/specs/rfc9110.html#status.202)_
 
+[pubsub]: https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern
+
 ---
 
-# Specific ideas in SAP Event Mesh 
+# Specific details about SAP Event Mesh 
 
-* Service on SAP BTP, various plans available
+* Service on SAP Business Technology Platform
+* Various plans available
 * Different protocols supported
 * Management, messaging and events APIs
-* Concepts that form building blocks
+* Building block concepts
+
+```bash
+curl \
+  --silent \
+  --url 'https://raw.githubusercontent.com/SAP-samples/btp-service-metadata/main/v0/developer/enterprise-messaging.json' \
+  | jq .description
+```
+
+> Resource from [BTP Service Metadata][btp-service-metadata]
+
+[btp-service-metadata]: https://github.com/SAP-samples/btp-service-metadata
 
 ---
 
 # Service on SAP BTP, various plans available
 
-The Event Mesh service was previously called Enterprise Messaging.
+The Event Mesh service (previously called Enterprise Messaging) provides broker facilities.
 
 ## Standard SAP BTP accounts
 
@@ -77,9 +92,9 @@ _We'll use the `dev` plan in trial for the `enterprise-messaging` service_
 
 # Different protocols supported
 
-* HTTP - [HyperText Transfer Protocol][http]
-* AMQP - [Advanced Message Queuing Protocol][amqp]
-* MQTT - [Message Queuing Telemetry Transport][mqtt]
+* HTTP (1991) - [HyperText Transfer Protocol][http] 
+* MQTT (1999) - [Message Queuing Telemetry Transport][mqtt] 
+* AMQP (2003) - [Advanced Message Queuing Protocol][amqp] 
 
 [http]: https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
 [amqp]: https://en.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol
@@ -110,23 +125,45 @@ Different APIs for different purposes.
 
 ---
 
-# Concepts that form building blocks
+# Building block concepts
 
 All scripts available in [SAP-samples/cloud-messaging-handsonsapdev][cloud-messaging-handsonsapdev]:
 
+* `service-setup`
 * `cleanup`
 * `setup`
 * `management`
 * `messaging`
 * `getapproute`
 
-Clone the repository, and source the `setup` file to start:
+Will also need Cloud Foundry CLI:
+
+* `cf`
+
+Demo is designed to be run in a trial SAP BTP subaccount. 
+
+[cloud-messaging-handsonsapdev]: https://github.com/sap-samples/cloud-messaging-handsonsapdev
+
+---
+
+# Building block concepts
 
 ```bash
+# Clone the repository and move into the directory
+git clone https://github.com/sap-samples/cloud-messaging-handsonsapdev
+cd cloud-messaging-handsonsapdev
+
+# Log in to CF and push the simple HTTP receiver
+cf login -a <CF API endpoint>
+cd webhook/ && cf push qmacro-webhook && cd ..
+
+# Create service instance; set up PATH and Bash completion for wrapper scripts
+vi settings.sh
+service-setup
 . setup
 ```
 
-[cloud-messaging-handsonsapdev]: https://github.com/sap-samples/cloud-messaging-handsonsapdev
+At this point we're ready to explore the building blocks with the `management` and `messaging` API endpoint wrappers.
 
 ---
 
@@ -307,9 +344,12 @@ messaging publish_message_to_topic TOPIC1 eins
 
 # Further details
 
-* Webhook subscription status and handshakes
-* Quality of service
 * Topic patterns
+* Webhook subscriptions
+  * Status 
+  * Handshakes
+  * Authentication
+* Quality of service
 * Support for CloudEvents
 
 ---
