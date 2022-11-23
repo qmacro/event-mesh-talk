@@ -7,19 +7,19 @@ paging: "%d / %d"
 
 # Talk
 
-Building event mesh driven architectures
+Building event mesh driven architectures with SAP Event Mesh
 
 # Speaker
 
 DJ Adams, Developer Advocate at SAP
 
-# Agenda & content
+# Agenda
 
 * General concepts
-* Specific ideas in SAP Event Mesh 
-* Tangible artifacts
+* Specific details about SAP Event Mesh 
+* Live demo exploring core building blocks
 * Further reading & resources
-* Questions & answers
+* Discussion
 
 This talk's content is available online in a GitHub repo: [qmacro/event-mesh-talk][repo]
 
@@ -55,6 +55,7 @@ _HTTP can be used asynchronously - see status [202 ACCEPTED](https://httpwg.org/
 # Specific details about SAP Event Mesh 
 
 * Service on SAP Business Technology Platform
+* Central broker for SaaS, on-prem and custom apps & services
 * Various plans available
 * Different protocols supported
 * Management, messaging and events APIs
@@ -153,17 +154,21 @@ Demo is designed to be run in a trial SAP BTP subaccount.
 git clone https://github.com/sap-samples/cloud-messaging-handsonsapdev
 cd cloud-messaging-handsonsapdev
 
+# Source completion & add current dir to PATH
+. setup
+
+# Set up environment variables
+vi settings.sh; . settings.sh
+
 # Log in to CF and push the simple HTTP receiver
 cf login -a <CF API endpoint>
-cd webhook/ && cf push qmacro-webhook && cd ..
+cd webhook/ && cf push $webhookapp && cd ..
 
-# Create service instance; set up PATH and Bash completion for wrapper scripts
-vi settings.sh
+# Create service instance
 service-setup
-. setup
 ```
 
-At this point we're ready to explore the building blocks with the `management` and `messaging` API endpoint wrappers.
+At this point we're ready to explore the building blocks with the API endpoint wrappers.
 
 ---
 
@@ -266,10 +271,10 @@ messaging consume_message_from_queue Q1
 ```
 
 ```bash
-cf a # list apps; qmacro-webhook is a simple Node.js endpoint (in `webhook/`)
+cf a # list apps to show the simple HTTP receiver 
 management get_queue Q1 # check details of queue content again
-messaging create_webhook_subscription WHS1 Q1 $(getapproute qmacro-webhook)
-cf logs --recent qmacro-webhook | grep got
+messaging create_webhook_subscription WHS1 Q1 $(getapproute $webhookapp)
+cf logs --recent $webhookapp | grep got
 ```
 
 ---
@@ -297,6 +302,7 @@ cf logs --recent qmacro-webhook | grep got
 management create_update_queue_subscription Q1 TOPIC1
 messaging pause_webhook_subscription WHS1 # temporarily stop draining to see msg in queue
 messaging publish_message_to_topic TOPIC1 eins
+management get_queue Q1 # see that this message is now in the queue
 ```
 ---
 
