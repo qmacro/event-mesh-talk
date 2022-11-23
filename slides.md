@@ -154,11 +154,9 @@ Demo is designed to be run in a trial SAP BTP subaccount.
 git clone https://github.com/sap-samples/cloud-messaging-handsonsapdev
 cd cloud-messaging-handsonsapdev
 
-# Source completion & add current dir to PATH
-. setup
-
-# Set up environment variables
-vi settings.sh; . settings.sh
+# Set up environment variables, source completion & add current dir to PATH
+vi settings.sh
+source setup
 
 # Log in to CF and push the simple HTTP receiver
 cf login -a <CF API endpoint>
@@ -192,7 +190,7 @@ At this point we're ready to explore the building blocks with the API endpoint w
 ```
 
 ```bash
-management create_update_queue Q1
+management create_update_queue q1
 ```
 
 ---
@@ -218,7 +216,7 @@ management create_update_queue Q1
 
 ```bash
 for x in one two three; do 
-  messaging publish_message_to_queue Q1 $x
+  messaging publish_message_to_queue q1 $x
 done
 ```
 
@@ -245,8 +243,8 @@ done
 ```
 
 ```bash
-management get_queue Q1 # check details of queue content
-messaging consume_message_from_queue Q1
+management get_queue q1 # check details of queue content
+messaging consume_message_from_queue q1
 ```
 
 ---
@@ -272,8 +270,8 @@ messaging consume_message_from_queue Q1
 
 ```bash
 cf a # list apps to show the simple HTTP receiver 
-management get_queue Q1 # check details of queue content again
-messaging create_webhook_subscription WHS1 Q1 $(getapproute $webhookapp)
+management get_queue q1 # check details of queue content again
+messaging create_webhook_subscription whs1 q1 $(getapproute $webhookapp)
 cf logs --recent $webhookapp | grep got
 ```
 
@@ -299,10 +297,10 @@ cf logs --recent $webhookapp | grep got
 ```
 
 ```bash
-management create_update_queue_subscription Q1 TOPIC1
-messaging pause_webhook_subscription WHS1 # temporarily stop draining to see msg in queue
-messaging publish_message_to_topic TOPIC1 eins
-management get_queue Q1 # see that this message is now in the queue
+management create_update_queue_subscription q1 topic1
+messaging pause_webhook_subscription whs1 # temporarily stop draining to see msg in queue
+messaging publish_message_to_topic topic1 eins
+management get_queue q1 # see that this message is now in the queue
 ```
 ---
 
