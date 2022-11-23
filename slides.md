@@ -172,7 +172,7 @@ At this point we're ready to explore the building blocks with the API endpoint w
 
 ---
 
-# Queue
+# Create queue
 
 ```text
 
@@ -197,7 +197,7 @@ management create_update_queue Q1
 
 ---
 
-# Publishing message to queue
+# Publish message to queue
 
 ```text
 
@@ -224,7 +224,7 @@ done
 
 ---
 
-# Consuming message directly from queue
+# Consume message directly from queue
 
 
 ```text
@@ -251,7 +251,7 @@ messaging consume_message_from_queue Q1
 
 ---
 
-# Consuming messages via webhook
+# Consume messages via webhook
 
 ```text
 
@@ -279,7 +279,7 @@ cf logs --recent $webhookapp | grep got
 
 ---
 
-# Publishing message to topic
+# Publish message to topic
 
 ```text
 
