@@ -370,7 +370,7 @@ management get_queue Q1 # see that this message is now in the queue
 
 ## Repositories
 
-* [SAP-samples/cloud-messaging-handsonsapdev repository][cloud-messaging-handsonsapdev]
+* [SAP-samples/cloud-messaging-handsonsapdev][cloud-messaging-handsonsapdev]
 * [qmacro/event-mesh-talk][event-mesh-talk]
 
 ## Video series
